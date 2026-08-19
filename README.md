@@ -1,22 +1,22 @@
-## 💼 Oportunidad y Propósito del Proyecto
 
-Una solución digital creada para **modernizar la atención y optimizar las ventas** en el sector gastronómico (bares, cafeterías y restaurantes):
+TuBar.io
 
-* **Dueños e inversionistas:** Que buscan digitalizar su negocio, reducir costos operativos y aumentar el ticket promedio mediante una experiencia de compra ágil.
-* **Negocios en crecimiento:** Que necesitan un sistema accesible para que sus clientes ordenen fácil y rápido sin fricciones.
+TuBar.io es una herramienta digital para bares, cafeterías y restaurantes que permite a los clientes consultar el menú, realizar pedidos y revisar su cuenta desde su celular.
 
----
+Su objetivo es agilizar la atención, reducir errores en los pedidos y facilitar la administración del consumo de cada mesa.
 
-## 🚀 Prueba el Sistema en Vivo
+Prueba el sistema
 
-Explora la experiencia del cliente directamente desde tu navegador o celular:
+Puedes acceder a una demostración funcional desde cualquier navegador:
 
-👉 **[Ver Demostración en Vivo - TuBar.io](https://royrc97.github.io/tubar.io/)**
+https://royrc97.github.io/tubar.io/
 
----
+Características
 
-## 📈 Beneficios Clave para el Negocio
+- Menú digital accesible desde el celular.
+- Registro de pedidos por mesa.
+- Actualización automática del consumo.
+- Consulta de la cuenta en tiempo real.
+- Proceso de cobro más organizado y transparente.
 
-* 📱 **Atención más rápida:** Menú digital accesible al instante desde el celular del cliente, reduciendo tiempos de espera.
-* 🧾 **Cuentas claras y sin errores:** Cálculo automático del total de consumo en tiempo real, evitando confusiones en el cobro.
-* 💳 **Cierre de venta eficiente:** Proceso visual e interactivo para revisar la orden y confirmar el pago de la mesa.
+TuBar.io busca simplificar la experiencia tanto para los clientes como para el personal del establecimiento.
