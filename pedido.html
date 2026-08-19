@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Bar - Pedido</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="volver" href="pedidos.html">&larr; Seguir agregando productos</a>
+    <h1>🧾 Pedido actual</h1>
+
+    <div id="lista-pedido"></div>
+
+    <div class="total">Total: $<span id="total-final">0.00</span></div>
+    <div class="acciones-pedido">
+        <a class="btn-reiniciar" href="#" id="btn-reiniciar">Reiniciar pedido</a>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const listaDiv = document.getElementById("lista-pedido");
+        const totalSpan = document.getElementById("total-final");
+        const pedidoRef = db.collection("estado").doc("pedido_actual");
+
+        pedidoRef.onSnapshot((doc) => {
+            const data = doc.data() || { items: [], total: 0 };
+            const items = data.items || [];
+
+            if (items.length === 0) {
+                listaDiv.innerHTML = "<p class='subtitulo'>Aún no has agregado productos.</p>";
+            } else {
+                listaDiv.innerHTML = items.map(item => `
+                    <div class="tarjeta">
+                        <div class="info">
+                            <strong>${item.nombre}</strong>
+                            <span class="precio">$${item.precio.toFixed(2)} MXN</span>
+                        </div>
+                    </div>
+                `).join("");
+            }
+
+            totalSpan.textContent = (data.total || 0).toFixed(2);
+        });
+
+        document.getElementById("btn-reiniciar").addEventListener("click", async (e) => {
+            e.preventDefault();
+            if (confirm("¿Seguro que quieres reiniciar el pedido? Se borrará todo.")) {
+                await pedidoRef.set({ items: [], total: 0 });
+            }
+        });
+    </script>
+</body>
+</html>
