@@ -1,0 +1,188 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1e1e2f;
+    color: #fff;
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+}
+
+h1 {
+    text-align: center;
+    color: #ffa500;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #ccc;
+    margin-bottom: 24px;
+}
+
+.volver {
+    display: inline-block;
+    margin-bottom: 20px;
+    color: #9ab4ff;
+    text-decoration: none;
+}
+
+.volver:hover {
+    text-decoration: underline;
+}
+
+/* --- Landing --- */
+.opciones {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.boton-grande {
+    text-decoration: none;
+    background: #2e2e42;
+    border: 2px solid #4a4a6a;
+    border-radius: 16px;
+    padding: 32px 40px;
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 200px;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.boton-grande:hover {
+    background: #3d3d5c;
+    transform: translateY(-4px);
+}
+
+.boton-grande span {
+    display: block;
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+}
+
+/* --- Lista de productos / pedido --- */
+.tarjeta {
+    background: #2e2e42;
+    border-radius: 12px;
+    padding: 16px 20px;
+    max-width: 500px;
+    margin: 0 auto 12px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tarjeta .info strong {
+    display: block;
+    font-size: 1.1rem;
+}
+
+.tarjeta .info .precio {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.tarjeta button, .tarjeta a.eliminar {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.btn-agregar {
+    background: #4caf50;
+}
+
+.btn-agregar:hover {
+    background: #43a047;
+}
+
+.btn-eliminar {
+    background: #e53935;
+}
+
+.btn-eliminar:hover {
+    background: #c62828;
+}
+
+/* --- Formulario --- */
+form.formulario {
+    background: #2e2e42;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto 32px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+form.formulario input {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+}
+
+form.formulario button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #4caf50;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+form.formulario button:hover {
+    background: #43a047;
+}
+
+.error {
+    max-width: 400px;
+    margin: 0 auto 16px auto;
+    color: #ff6b6b;
+    text-align: center;
+}
+
+.total {
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: right;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #4caf50;
+}
+
+.acciones-pedido {
+    max-width: 500px;
+    margin: 20px auto;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.acciones-pedido a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+.btn-ver {
+    background: #2196f3;
+}
+
+.btn-reiniciar {
+    background: #e53935;
+}
