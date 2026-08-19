@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Bar - Pedidos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="volver" href="index.html">&larr; Volver al inicio</a>
+    <h1>🍽️ Tu Bar</h1>
+    <p class="subtitulo">Selecciona tus bebidas y alimentos</p>
+
+    <div id="lista-productos"></div>
+
+    <div class="total">Total del pedido: $<span id="total-actual">0.00</span></div>
+    <div class="acciones-pedido">
+        <a class="btn-ver" href="pedido.html">Ver pedido / cuenta</a>
+    </div>
+
+    <!-- Firebase SDK (versión compat, más simple para empezar) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const listaDiv = document.getElementById("lista-productos");
+        const totalSpan = document.getElementById("total-actual");
+
+        // 📥 Escuchar productos en tiempo real
+        db.collection("productos").orderBy("nombre").onSnapshot((snapshot) => {
+            listaDiv.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const p = doc.data();
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "tarjeta";
+                tarjeta.innerHTML = `
+                    <div class="info">
+                        <strong>${p.nombre}</strong>
+                        <span class="precio">$${p.precio.toFixed(2)} MXN</span>
+                    </div>
+                    <button class="btn-agregar" data-id="${doc.id}" data-nombre="${p.nombre}" data-precio="${p.precio}">
+                        + Agregar
+                    </button>
+                `;
+                listaDiv.appendChild(tarjeta);
+            });
+
+            // Conectar los botones recién creados
+            document.querySelectorAll(".btn-agregar").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    agregarAlPedido(btn.dataset.nombre, parseFloat(btn.dataset.precio));
+                });
+            });
+        });
+
+        // 🧾 Escuchar el pedido actual en tiempo real (para el total)
+        const pedidoRef = db.collection("estado").doc("pedido_actual");
+
+        pedidoRef.onSnapshot((doc) => {
+            const data = doc.data() || { items: [], total: 0 };
+            totalSpan.textContent = (data.total || 0).toFixed(2);
+        });
+
+        async function agregarAlPedido(nombre, precio) {
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(pedidoRef);
+                const data = doc.exists ? doc.data() : { items: [], total: 0 };
+                const items = data.items || [];
+                items.push({ nombre, precio });
+                const nuevoTotal = (data.total || 0) + precio;
+                t.set(pedidoRef, { items, total: nuevoTotal });
+            });
+        }
+    </script>
+</body>
+</html>
