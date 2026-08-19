@@ -14,7 +14,31 @@
 
     <div class="total">Total: $<span id="total-final">0.00</span></div>
     <div class="acciones-pedido">
+        <a class="btn-pagar" href="#" id="btn-pagar">💳 Pagar</a>
         <a class="btn-reiniciar" href="#" id="btn-reiniciar">Reiniciar pedido</a>
+    </div>
+
+    <!-- Modal de pago -->
+    <div id="modal-pago" class="modal-overlay" style="display:none;">
+        <div class="modal-caja">
+            <h2>💳 Confirmar pago</h2>
+            <p class="subtitulo">Total a cobrar: $<span id="modal-total">0.00</span> MXN</p>
+
+            <p style="margin-bottom:8px;">Método de pago:</p>
+            <div class="metodos-pago">
+                <button type="button" class="metodo" data-metodo="Efectivo">💵 Efectivo</button>
+                <button type="button" class="metodo" data-metodo="Tarjeta">💳 Tarjeta</button>
+            </div>
+
+            <div id="recibo" style="display:none;">
+                <p class="recibo-ok">✅ Pago simulado con <span id="recibo-metodo"></span></p>
+                <p class="subtitulo">Este es un pago de prueba, no se procesó dinero real.</p>
+            </div>
+
+            <div class="modal-acciones">
+                <button type="button" id="btn-cerrar-modal" class="btn-cerrar">Cerrar</button>
+            </div>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -51,6 +75,57 @@
             if (confirm("¿Seguro que quieres reiniciar el pedido? Se borrará todo.")) {
                 await pedidoRef.set({ items: [], total: 0 });
             }
+        });
+
+        // 💳 Flujo de pago simulado
+        const modal = document.getElementById("modal-pago");
+        const modalTotal = document.getElementById("modal-total");
+        const recibo = document.getElementById("recibo");
+        const reciboMetodo = document.getElementById("recibo-metodo");
+        const btnPagar = document.getElementById("btn-pagar");
+
+        btnPagar.addEventListener("click", async (e) => {
+            e.preventDefault();
+            const doc = await pedidoRef.get();
+            const data = doc.data() || { items: [], total: 0 };
+
+            if (!data.items || data.items.length === 0) {
+                alert("No hay productos en el pedido todavía.");
+                return;
+            }
+
+            modalTotal.textContent = (data.total || 0).toFixed(2);
+            recibo.style.display = "none";
+            document.querySelectorAll(".metodo").forEach(btn => btn.style.display = "inline-block");
+            modal.style.display = "flex";
+        });
+
+        document.querySelectorAll(".metodo").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+                const metodo = btn.dataset.metodo;
+                const doc = await pedidoRef.get();
+                const data = doc.data() || { items: [], total: 0 };
+
+                // Guardar el pedido pagado en el historial
+                await db.collection("historial_pedidos").add({
+                    items: data.items || [],
+                    total: data.total || 0,
+                    metodo_pago: metodo,
+                    fecha: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Mostrar recibo simulado
+                reciboMetodo.textContent = metodo;
+                recibo.style.display = "block";
+                document.querySelectorAll(".metodo").forEach(b => b.style.display = "none");
+
+                // Limpiar el pedido actual
+                await pedidoRef.set({ items: [], total: 0 });
+            });
+        });
+
+        document.getElementById("btn-cerrar-modal").addEventListener("click", () => {
+            modal.style.display = "none";
         });
     </script>
 </body>
