@@ -1,13 +1,17 @@
-// 🔑 Reemplaza estos valores con los que copiaste de tu Firebase Console
-// (Configuración del proyecto → Tus apps → firebaseConfig)
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyA8Sl7nDm6Aw_WJBDCwXfLfk29n7tLqako",
+  authDomain: "tubar-app.firebaseapp.com",
+  projectId: "tubar-app",
+  storageBucket: "tubar-app.firebasestorage.app",
+  messagingSenderId: "146267640357",
+  appId: "1:146267640357:web:e9cccb97a63f076d0065cc"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
