@@ -14,9 +14,8 @@ https://royrc97.github.io/tubar.io/
 Características
 
 - Menú digital accesible desde el celular.
-- Registro de pedidos por mesa.
-- Actualización automática del consumo.
-- Consulta de la cuenta en tiempo real.
+- Registro de pedidos.
+
 - Proceso de cobro más organizado y transparente.
 
 TuBar.io busca simplificar la experiencia tanto para los clientes como para el personal del establecimiento.
