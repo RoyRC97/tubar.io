@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Bar - Productos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="volver" href="index.html">&larr; Volver al inicio</a>
+    <h1>📦 Registrar productos</h1>
+
+    <p class="error" id="mensaje-error" style="display:none;"></p>
+
+    <form class="formulario" id="form-producto">
+        <input type="text" id="nombre" placeholder="Nombre del producto" required>
+        <input type="number" id="precio" placeholder="Precio (MXN)" step="0.01" min="0" required>
+        <button type="submit">Agregar producto</button>
+    </form>
+
+    <div id="lista-productos"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const listaDiv = document.getElementById("lista-productos");
+        const form = document.getElementById("form-producto");
+        const errorMsg = document.getElementById("mensaje-error");
+
+        // 📥 Escuchar productos en tiempo real
+        db.collection("productos").orderBy("nombre").onSnapshot((snapshot) => {
+            listaDiv.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const p = doc.data();
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "tarjeta";
+                tarjeta.innerHTML = `
+                    <div class="info">
+                        <strong>${p.nombre}</strong>
+                        <span class="precio">$${p.precio.toFixed(2)} MXN</span>
+                    </div>
+                    <a class="btn-eliminar" href="#" data-id="${doc.id}">Eliminar</a>
+                `;
+                listaDiv.appendChild(tarjeta);
+            });
+
+            document.querySelectorAll(".btn-eliminar").forEach((btn) => {
+                btn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    await db.collection("productos").doc(btn.dataset.id).delete();
+                });
+            });
+        });
+
+        // ➕ Registrar nuevo producto
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            errorMsg.style.display = "none";
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const precio = parseFloat(document.getElementById("precio").value);
+
+            if (!nombre || isNaN(precio)) {
+                mostrarError("Nombre y precio son obligatorios.");
+                return;
+            }
+
+            // Evitar duplicados por nombre
+            const existentes = await db.collection("productos").where("nombre", "==", nombre).get();
+            if (!existentes.empty) {
+                mostrarError(`Ya existe un producto llamado "${nombre}".`);
+                return;
+            }
+
+            await db.collection("productos").add({ nombre, precio });
+            form.reset();
+        });
+
+        function mostrarError(texto) {
+            errorMsg.textContent = texto;
+            errorMsg.style.display = "block";
+        }
+    </script>
+</body>
+</html>
